@@ -1,36 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { Switch, Route, Link } from 'react-router-dom';
 import Posts from './Posts';
+import Photos from './Photos';
+import Home from './Home';
 
-const Content = (user, id) => {
-    const [posts, setPosts] = useState([]);
-
-    const getPosts = async () => {
-        let res = await fetch('https://jsonplaceholder.typicode.com/posts')
-        let posts = await res.json();
-        setPosts(posts);
-    }
-
-    useEffect(() => {
-        getPosts();
-    }, [])
-
+const Content = (user) => {
     return (
-        <div className="card">
-            <div className="row justify-content-center">
+        <div className="card shadow">
+            <div className="row justify-content-center my-3">
                 <ul className="nav">
-                    <li className="nav-item"><p className="nav-link">{user.name}</p></li>
-                    <li className="nav-item"><button className='btn' to='/posts'>Posts</button></li>
-                    <li className="nav-item"><button className='btn' to='/photos'>Photos</button></li>
+                    <li className="nav-item"><p className="nav-link m-0"><strong>{user.username}</strong></p></li>
+                    <li className="nav-item"><Link className='nav-link' to={`/${user.username}/posts`}>Posts</Link></li>
+                    <li className="nav-item"><Link className='nav-link' to={`/${user.username}/photos`}>Photos</Link></li>
                 </ul>
             </div>
             <div>
-                {posts.map(post => (
-                    <div key={post.id} className='p-3'>
-                        <hr></hr>
-                        <h6>{post.title}</h6>
-                        <p>{post.body}</p>
-                    </div>)
-                )}
+                <Switch>
+                    <Route exact path={`/${user.username}`} component={Home} />
+                    <Route path={`/${user.username}/posts`} render={() => <Posts id={user.userId} />} />
+                    <Route path={`/${user.username}/photos`} render={() => <Photos id={user.userId} />} />
+                </Switch>
             </div>
         </div>
     );
