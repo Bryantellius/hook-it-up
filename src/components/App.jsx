@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Link, Switch, Route } from 'react-router-dom';
 import Content from './Content';
+import Home from './Home';
 
 
 const App = () => {
@@ -19,23 +20,23 @@ const App = () => {
     return (
         <Router>
             <React.Fragment>
-                <header className="jumbotron text-center">
-                    <h1><Link to='/'>SeaGlass</Link></h1>
+                <header className="text-center bg-light rounded shadow">
+                    <h1><Link to='/' className='nav-link text-dark'>Colloquium</Link></h1>
                 </header>
                 <div className="row">
                     <div className="col-md-4">
-                        <div className="card">
+                        <div className="card shadow">
                             <ul className="nav">
                                 <li className="nav-item">
-                                    {users.map(user => (<Link className='nav-link' key={user.id} to={`/${user.id}`}>{user.username}</Link>))}
+                                    {users.map(user => (<Link className='nav-link' key={user.id} to={`/${user.username}`}>{user.username}</Link>))}
                                 </li>
                             </ul>
                         </div>
                     </div>
                     <div className="col-md-8">
                         <Switch>
-                            <Route exact path='/' />
-                            {users.map(user => (<Route key={user.id} path={`/${user.id}`} render={() => <Content name={user.username} id={user.id}/>}/>))}
+                            <Route exact path='/' component={Home}/>
+                            {users.map(user => (<Route key={user.id} path={`/${user.username}`} render={() => <Content username={user.username} userId={user.id}/>}/>))}
                         </Switch>
                     </div>
                 </div>
